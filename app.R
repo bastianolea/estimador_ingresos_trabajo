@@ -7,7 +7,7 @@ library(shades)
 color_base = "#BC4F21"
 color_principal = color_base |> saturation(delta(-0.05)) |> as.character()
 color_fondo = color_base |> brightness(delta(-0.65)) |> saturation(delta(-0.4)) |> as.character()
-color_detalle = color_base |> brightness(delta(-0.5)) |> saturation(delta(-0.5)) |> as.character()
+color_detalle = color_base |> brightness(delta(-0.3)) |> saturation(delta(-0.5)) |> as.character()
 color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
 
 # # previsualizar colores
