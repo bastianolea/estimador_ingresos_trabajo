@@ -17,6 +17,7 @@ color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
 #        color_detalle,
 #        color_principal), bg = "#181818")
 
+# ui ----
 ui <- fluidPage(
     
     theme = bs_theme(
@@ -60,7 +61,7 @@ ui <- fluidPage(
                    
                    sliderInput("precio_hora",
                                label = "Precio por hora",
-                               value = 20000, step = 1000,
+                               value = 4000, step = 1000,
                                min = 3000, max = 30000, 
                                ticks = F, sep = ".", pre = "$"
                    ) |> 
