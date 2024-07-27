@@ -2,7 +2,6 @@ library(shiny)
 library(htmltools)
 library(bslib)
 library(shades)
-# library(thematic)
 
 # crear colores a partir de un color base
 color_base = "#BC4F21"
@@ -31,8 +30,7 @@ ui <- fluidPage(
     tags$style(".irs-min, .irs-max, .irs-single { font-size: 60% !important ;}"),
     
     div(style = css(max_width = "300px", 
-                    margin = "auto", 
-                    margin_top = "60px"),
+                    margin = "auto", margin_top = "60px"),
         fluidRow(
             column(12,
                    
@@ -42,29 +40,19 @@ ui <- fluidPage(
                    
                    sliderInput("horas_diarias",
                                label = "Horas diarias",
-                               min = 1, max = 12, value = 8, ticks = F
-                   ) |> 
+                               min = 1, max = 12, value = 8, ticks = F) |> 
                        div(style = css(margin_bottom = "30px")),
                    
                    sliderInput("dias_semana",
                                label = "Días a la semana",
-                               min = 1, max = 7, value = 5, ticks = F
-                   ) |> 
+                               min = 1, max = 7, value = 5, ticks = F) |> 
                        div(style = css(margin_bottom = "30px")),
-                   
-                   
-                   # numericInput("precio_hora",
-                   #              label = "Precio por hora",
-                   #              value = 10000, step = 1000,
-                   #              min = 3000, max = 60000,
-                   # ),
                    
                    sliderInput("precio_hora",
                                label = "Precio por hora",
                                value = 4000, step = 1000,
                                min = 3000, max = 30000, 
-                               ticks = F, sep = ".", pre = "$"
-                   ) |> 
+                               ticks = F, sep = ".", pre = "$") |> 
                        div(style = css(margin_bottom = "30px")),
             )
         ),
