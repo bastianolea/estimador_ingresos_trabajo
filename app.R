@@ -2,6 +2,7 @@ library(shiny)
 library(htmltools)
 library(bslib)
 library(shades)
+library(glue)
 
 # crear colores a partir de un color base
 color_base = "#BC4F21"
@@ -19,6 +20,7 @@ color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
 # ui ----
 ui <- fluidPage(
     
+    # tema de la app
     theme = bs_theme(
         bg = color_fondo,
         fg = color_texto,
@@ -27,16 +29,23 @@ ui <- fluidPage(
         base_font = bslib::font_google("Pacifico")
     ),
     
+    # estilo de textos de sliders
     tags$style(".irs-min, .irs-max, .irs-single { font-size: 60% !important ;}"),
     
-    div(style = css(max_width = "300px", 
+    div(
+        # ancho máximo de la app
+        style = css(max_width = "300px", 
                     margin = "auto", margin_top = "60px"),
         fluidRow(
+            # inputs
             column(12,
                    
+                   # título de la app
                    h1("Presupuesto por horas", 
                       style = css(color = color_detalle)),
                    br(),
+                   
+                   # sliders
                    
                    sliderInput("horas_diarias",
                                label = "Horas diarias",
@@ -57,20 +66,33 @@ ui <- fluidPage(
             )
         ),
         
+        # cuadro de cifra
         fluidRow(
             column(12, 
                    style = css(padding = "18px", font_size = "130%", 
                                background_color = color_fondo, 
                                border = paste("3.5px", color_detalle, "solid"), 
                                margin_top = "24px",
-                               margin_bottom = "64px",
                                padding_bottom = "0px",
+                               padding_top = "14px",
                                text_align = "center",
                                color = color_texto,
                                border_radius = "6px"),
                    
-                   div(strong("Ingreso mensual:"),
-                       p("$", textOutput("texto", inline = T))
+                   # titular y cifra
+                   div(
+                       strong("Ingreso mensual:"),
+                       p(textOutput("texto", inline = T))
+                   )
+            ),
+            
+            # redacción del texto
+            column(12,
+                   style = css(margin_top = "48px",
+                               margin_bottom = "64px"),
+                   div(style = css(color = color_detalle, 
+                                   font_size = "85%"),
+                       textOutput("texto_horas")
                    )
             )
         )
@@ -79,6 +101,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
     
+    # cálculo del monto mensual
     ingreso_mensual <- reactive({
         
         ingreso_diario = input$precio_hora * input$horas_diarias
@@ -88,10 +111,32 @@ server <- function(input, output, session) {
         return(ingreso_mensual)
     })
     
+    # formatear el monto mensual con signo peso y separadores de miles
+    ingreso_mensual_formato <- reactive({
+        monto <- format(ingreso_mensual(), 
+                        big.mark = ".", decimal.mark = ",",
+                        scientific = FALSE)
+        
+        return(paste0("$", monto))
+    })
+    
+    # output de la cifra grande del monto mensua
     output$texto <- renderText({
-        format(ingreso_mensual(), 
-               big.mark = ".", decimal.mark = ",",
-               scientific = FALSE)
+        ingreso_mensual_formato()
+    })
+    
+    # redacción del texto explicativo usando todas las variables
+    output$texto_horas <- renderText({
+        precio <- format(input$precio_hora,
+                         big.mark = ".", decimal.mark = ",",
+                         scientific = FALSE)
+        
+        horas_semanales <- (input$horas_diarias * input$dias_semana)
+        glue("Considerando un cobro por hora de ${precio}, 
+        y una carga de trabajo estimada de {input$horas_diarias} horas diarias, 
+        {input$dias_semana} días a la semana, 
+        se estima un total de {horas_semanales} horas semanales de trabajo, 
+        resultando en un monto mensual aproximado de {ingreso_mensual_formato()}.")
     })
 }
 
