@@ -19,6 +19,7 @@ color_texto = color_base |> chroma(70) |> lightness(95) |> as.character()
 
 # ui ----
 ui <- fluidPage(
+    title = "Presupuesto por horas", lang = "es",
     
     # tema de la app
     theme = bs_theme(
@@ -34,7 +35,7 @@ ui <- fluidPage(
     
     div(
         # ancho máximo de la app
-        style = css(max_width = "300px", 
+        style = css(max_width = "320px", 
                     margin = "auto", margin_top = "60px"),
         fluidRow(
             # inputs
@@ -88,12 +89,28 @@ ui <- fluidPage(
             
             # redacción del texto
             column(12,
-                   style = css(margin_top = "48px",
-                               margin_bottom = "64px"),
+                   style = css(margin_top = "42px"),
                    div(style = css(color = color_detalle, 
                                    font_size = "85%"),
                        textOutput("texto_horas")
                    )
+            )
+        ),
+        
+        # firma
+        fluidRow(
+            column(12,
+                   style = css(margin_top = "50px",
+                               margin_bottom = "60px",
+                               font_size = "60%",
+                               border_radius = "12px",
+                               background_color = color_fondo |> brightness(delta(-0.025)),
+                               padding = "16px",
+                               padding_bottom = "0px",
+                               font_family = "Tahoma",
+                               opacity = "50%"),
+                   markdown("App desarrollada en R por [Bastián Olea Herrera.](https://bastianolea.github.io/shiny_apps/) 
+                            [Código de fuente en GitHub.](https://github.com/bastianolea/estimador_ingresos_trabajo)")
             )
         )
     )

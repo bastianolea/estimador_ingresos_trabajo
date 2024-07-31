@@ -5,7 +5,7 @@ account: bastianoleah
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12373647
-bundleId: 8915155
+bundleId: 8926835
 url: https://bastianoleah.shinyapps.io/estimador_ingresos_trabajo/
 version: 1
 asMultiple: FALSE
